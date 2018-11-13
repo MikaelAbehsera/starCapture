@@ -37,13 +37,23 @@ var platforms;
 var player;
 var cursors;
 var stars;
+var score = 0;
+var scoreText;
 
 function create() {
+  
+  
   // add sky png as backround
   this.add.image(400, 300, "sky");
 
   platforms = this.physics.add.staticGroup();
 
+  //  score text setup
+  scoreText = this.add.text(16, 16, "score: 0", {
+    fontSize: "60px",
+    fill: "red"
+  });
+  
   // create 3 platforms + the ground
   platforms.create(400, 568, "ground").setScale(2).refreshBody();
   platforms.create(600, 400, "ground");
@@ -152,6 +162,7 @@ function update() {
  */
 function collectStar(player, star) {
   star.disableBody(true, true);
-  console.log(player);
 
+  score += 10;
+  scoreText.setText("Score: " + score);
 }
