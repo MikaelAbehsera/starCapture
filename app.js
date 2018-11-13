@@ -27,6 +27,8 @@ function preload() {
 function create() {
   // display the sky image
   this.add.image(400, 300, "sky");
+  this.add.image(400, 300, "star");
+
 }
 
 function update() {}
