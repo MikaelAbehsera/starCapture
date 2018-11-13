@@ -165,4 +165,8 @@ function collectStar(player, star) {
 
   score += 10;
   scoreText.setText("Score: " + score);
+
+  if(score === 120) {
+    scoreText.setText("YOU WIN!");
+  } 
 }
