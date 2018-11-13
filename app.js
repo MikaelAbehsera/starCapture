@@ -39,6 +39,7 @@ var cursors;
 var stars;
 var score = 0;
 var scoreText;
+var roundText;
 var bombs;
 var roundNum = 1;
 
@@ -54,6 +55,10 @@ function create() {
   scoreText = this.add.text(16, 16, "score: 0", {
     fontSize: "60px",
     fill: "red"
+  });
+  roundText = this.add.text(690, 16, "Round: 1", {
+    fontSize: "20px",
+    fill: "blue"
   });
 
   // create 3 platforms + the ground
@@ -75,8 +80,6 @@ function create() {
 
   //create bad bombs
   bombs = this.physics.add.group();
-
-
 
   // running left animation 
   this.anims.create({
@@ -191,6 +194,8 @@ function collectStar(player, star) {
   if (score % 120 === 0) {
     scoreText.setText(`YOU WON ROUND ${roundNum}`);
     roundNum++;
+    roundText.setText(`Round ${roundNum}`);
+    
   }
 }
 
