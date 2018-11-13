@@ -39,10 +39,12 @@ var cursors;
 var stars;
 var score = 0;
 var scoreText;
+var bombs;
+var roundNum = 1;
 
 function create() {
-  
-  
+
+
   // add sky png as backround
   this.add.image(400, 300, "sky");
 
@@ -53,7 +55,7 @@ function create() {
     fontSize: "60px",
     fill: "red"
   });
-  
+
   // create 3 platforms + the ground
   platforms.create(400, 568, "ground").setScale(2).refreshBody();
   platforms.create(600, 400, "ground");
@@ -70,6 +72,11 @@ function create() {
   player.setBounce(0.2);
   // don't allow player to leave screen so add colition with world borders to true
   player.setCollideWorldBounds(true);
+
+  //create bad bombs
+  bombs = this.physics.add.group();
+
+
 
   // running left animation 
   this.anims.create({
@@ -123,13 +130,18 @@ function create() {
 
   // add a collision relation between player and platforms
   this.physics.add.collider(player, platforms);
+
   // add a collision relation between starts and platforms
   this.physics.add.collider(stars, platforms);
-  //if user and star collide set star to null
+
+  // if user and star collide, run collectStar
   this.physics.add.overlap(player, stars, collectStar, null, this);
 
+  // add a collision relation between bombs and platforms
+  this.physics.add.collider(bombs, platforms);
 
-
+  // if user and bomb collide, run hitBomb
+  this.physics.add.collider(player, bombs, hitBomb, null, this);
 }
 
 function update() {
@@ -162,11 +174,34 @@ function update() {
  */
 function collectStar(player, star) {
   star.disableBody(true, true);
-
   score += 10;
   scoreText.setText("Score: " + score);
+  if (stars.countActive(true) === 0) {
+    stars.children.iterate(function (child) {
+      child.enableBody(true, child.x, 0, true, true);
+    });
+    var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+    var bomb = bombs.create(x, 16, "bomb");
+    bomb.setBounce(1);
+    bomb.setCollideWorldBounds(true);
+    bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+    bomb.allowGravity = false;
+  }
+  // if all starts are collected, display win text
+  if (score % 120 === 0) {
+    scoreText.setText(`YOU WON ROUND ${roundNum}`);
+    roundNum++;
+  }
+}
 
-  if(score === 120) {
-    scoreText.setText("YOU WIN!");
-  } 
+/**
+ * 
+ * @param {*} player 
+ * @param {*} bomb 
+ */
+function hitBomb(player, bomb) {
+  this.physics.pause();
+  player.setTint(0xff0000);
+  player.anims.play("turn");
+  gameOver = true;
 }
