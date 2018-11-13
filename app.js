@@ -3,9 +3,9 @@ var config = {
   width: 800,
   height: 600,
   scene: {
-      preload: preload,
-      create: create,
-      update: update
+    preload: preload,
+    create: create,
+    update: update
   }
 };
 
@@ -17,10 +17,10 @@ function preload() {
   this.load.image('star', 'assets/star.png');
   this.load.image('bomb', 'assets/bomb.png');
   this.load.spritesheet('dude',
-      'assets/dude.png', {
-          frameWidth: 32,
-          frameHeight: 48
-      }
+    'assets/dude.png', {
+      frameWidth: 32,
+      frameHeight: 48
+    }
   );
 }
 
